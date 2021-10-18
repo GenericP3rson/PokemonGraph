@@ -1,0 +1,10 @@
+
+CREATE QUERY fiveHeavyPokemon() FOR GRAPH PokemonGraph { 
+  AvgAccum @weights; # Our AvgAccum
+  catchThemAll = {Pokemon.*}; # All the Pokémon
+  Types = SELECT t FROM catchThemAll:s- (POKEMON_TYPE:e)-Type:t # Type vertices connect to Pokemone with POKEMON_TYPE
+          ACCUM t.@weights += s.weight # Add to the AvgAccum
+          ORDER BY t.@weights DESC # Order them descending
+          LIMIT 5; # Limits the results to just the top five
+  PRINT Types;
+}

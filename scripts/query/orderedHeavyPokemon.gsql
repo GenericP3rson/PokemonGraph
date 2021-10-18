@@ -1,0 +1,9 @@
+
+CREATE QUERY orderedHeavyPokemon() FOR GRAPH PokemonGraph { 
+  AvgAccum @weights; # Our AvgAccum
+  catchThemAll = {Pokemon.*}; # All the Pokémon
+  Types = SELECT t FROM catchThemAll:s- (POKEMON_TYPE:e)-Type:t # Type vertices connect to Pokemone with POKEMON_TYPE
+          ACCUM t.@weights += s.weight # Add to the AvgAccum
+          ORDER BY t.@weights DESC; # Order them descending
+  PRINT Types;
+}
